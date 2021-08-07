@@ -17,11 +17,61 @@ The characteristics:
 
 ### Getting Started
 In order to run a toy example, first run prerun.sh. This will download a given set of videos, and run ffmpeg with 
-freezedetect filter, to generate freezedetect output
+freezedetect filter, to generate freezedetect outputs use the following CLI:
+```shell
+ffmpeg -i ./my_input_video.mp4 -vf "freezedetect=n=0.003,metadata=mode=print:file=freeze_my_input_video.txt" -map 0:v:0 -f null -
+```
 
-### Assumptions made
+
+### Assumptions
 * The program and Class _FreezeValidator_ runs on already valid generated ffmpeg freezedecets reports
-* input files contains pair only of lavfi.freezedetect.freeze_start and lavfi.freezedetect.freeze_end although a valid 
-  input can contain a lavfi.freezedetect.freeze_start without its matching lavfi.freezedetect.freeze_end
-
+* input files contains pair only of `lavfi.freezedetect.freeze_start` and `lavfi.freezedetect.freeze_end` although a valid 
+  input can contain a `lavfi.freezedetect.freeze_start` without its matching `lavfi.freezedetect.freeze_end`
+* The program should be run only from the repo parent directory, and the generated files should reside there also,   
+and match `*_freeze*.txt` wildcard (and not any other file in this location)
+### Output
+A typical output will look like:
+```json
+{
+   "all_videos_freeze_frame_synced":true,
+   "videos":[
+      {
+         "longest_valid_period":7.35,
+         "valid_video_percentage":56.00,
+         "valid_periods":[
+            [
+               0.00,
+               3.50
+            ],
+            [
+               6.65,
+               14
+            ],
+            [
+               19.71,
+               20.14
+            ]
+         ]
+      },
+      {
+         "longest_valid_period":7.33,
+         "valid_video_percentage":55.10,
+         "valid_periods":[
+            [
+               0.00,
+               3.40
+            ],
+            [
+               6.65,
+               13.98
+            ],
+            [
+               19.71,
+               20.00
+            ]
+         ]
+      }
+   ]
+} 
+```
 
