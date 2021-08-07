@@ -28,8 +28,8 @@ class FreezeValidator:
             cur_periods = []
 
             for idx in range(len(start_lines)):
-                start = float(start_lines[idx].split("=")[1].strip())
-                end = float(end_lines[idx].split("=")[1].strip())
+                start = round(float(start_lines[idx].split("=")[1].strip()), 2)
+                end = round(float(end_lines[idx].split("=")[1].strip()), 2)
                 cur_periods.append([start, end])
 
             all_periods.append(cur_periods)
