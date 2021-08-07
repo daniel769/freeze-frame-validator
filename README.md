@@ -20,4 +20,8 @@ In order to run a toy example, first run prerun.sh. This will download a given s
 freezedetect filter, to generate freezedetect output
 
 ### Assumptions made
-The program and Class _FreezeValidator_use runs on already generated ffmpeg freezedecets reports 
+* The program and Class _FreezeValidator_ runs on already valid generated ffmpeg freezedecets reports
+* input files contains pair only of lavfi.freezedetect.freeze_start and lavfi.freezedetect.freeze_end although a valid 
+  input can contain a lavfi.freezedetect.freeze_start without its matching lavfi.freezedetect.freeze_end
+
+
