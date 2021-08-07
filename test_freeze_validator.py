@@ -39,22 +39,22 @@ def test_are_all_synced():
 
 def test_freeze_validator():
     target = """{
-   "all_videos_freeze_frame_synced": true,
+   "all_videos_freeze_frame_synced": false,
    "videos": [
       {
-         "longest_valid_period": 7.26,
+         "longest_valid_period": 7.25,
          "valid_video_percentage": 56.77,
-         "valid_periods": "[[4.5045, 8.3083], [9.97663, 12.1288], [16.016, 23.2733]]"
+         "valid_periods": "[[4.5, 8.31], [9.98, 12.13], [16.02, 23.27]]"
       },
       {
          "longest_valid_period": 7.37,
-         "valid_video_percentage": 61.17,
-         "valid_periods": "[[4.5045, 10.4271], [12.012, 14.2476], [18.018, 25.392]]"
+         "valid_video_percentage": 61.21,
+         "valid_periods": "[[4.5, 10.43], [12.01, 14.25], [18.02, 25.39]]"
       },
       {
          "longest_valid_period": 7.56,
-         "valid_video_percentage": 62.62,
-         "valid_periods": "[[4.5045, 10.6106], [12.0787, 14.4311], [18.018, 25.5755]]"
+         "valid_video_percentage": 62.63,
+         "valid_periods": "[[4.5, 10.61], [12.08, 14.43], [18.02, 25.58]]"
       }
    ]
 }"""

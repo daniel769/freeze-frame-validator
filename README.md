@@ -16,11 +16,12 @@ The characteristics:
 
 
 ### Getting Started
-In order to run a toy example, first run prerun.sh. This will download a given set of videos, and run ffmpeg with 
-freezedetect filter, to generate freezedetect outputs use the following CLI:
+* In order to run a toy example, run ffmpeg with freezedetect filter, to generate freezedetect outputs use the following CLI:
 ```shell
 ffmpeg -i ./my_input_video.mp4 -vf "freezedetect=n=0.003,metadata=mode=print:file=freeze_my_input_video.txt" -map 0:v:0 -f null -
 ```
+* Run `freeze_validator.py`  and inspect your outputs in `./output` generated directory
+
 
 
 ### Assumptions
@@ -31,6 +32,32 @@ ffmpeg -i ./my_input_video.mp4 -vf "freezedetect=n=0.003,metadata=mode=print:fil
 and match `*_freeze*.txt` wildcard (and not any other file in this location)
 ### Output
 A typical output will look like:
+```json
+{
+   "all_videos_freeze_frame_synced": false,
+   "videos": [
+      {
+         "longest_valid_period": 7.25,
+         "valid_video_percentage": 56.77,
+         "valid_periods": "[[4.5, 8.31], [9.98, 12.13], [16.02, 23.27]]"
+      },
+      {
+         "longest_valid_period": 7.37,
+         "valid_video_percentage": 61.21,
+         "valid_periods": "[[4.5, 10.43], [12.01, 14.25], [18.02, 25.39]]"
+      },
+      {
+         "longest_valid_period": 7.56,
+         "valid_video_percentage": 62.63,
+         "valid_periods": "[[4.5, 10.61], [12.08, 14.43], [18.02, 25.58]]"
+      }
+   ]
+}
+```
+
+### Issues and Future Work
+* Add input path option to the executable (freeze_validator.py)
+* The current output format needs will need to change to something like:
 ```json
 {
    "all_videos_freeze_frame_synced":true,
