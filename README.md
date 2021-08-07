@@ -26,7 +26,7 @@ ffmpeg -i ./my_input_video.mp4 -vf "freezedetect=n=0.003,metadata=mode=print:fil
 
 ### Assumptions
 * The program and Class _FreezeValidator_ runs on already valid generated ffmpeg freezedecets reports
-* input files contains pair only of `lavfi.freezedetect.freeze_start` and `lavfi.freezedetect.freeze_end` although a valid 
+* input files contains pairs of `lavfi.freezedetect.freeze_start` and `lavfi.freezedetect.freeze_end` although a valid 
   input can contain a `lavfi.freezedetect.freeze_start` without its matching `lavfi.freezedetect.freeze_end`
 * The program should be run only from the repo parent directory, and the generated files should reside there also,   
 and match `*_freeze*.txt` wildcard (and not any other file in this location)
