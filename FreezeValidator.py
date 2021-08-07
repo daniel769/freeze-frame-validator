@@ -1,11 +1,14 @@
-
 import json
 import glob
+import numpy as np
 import os
+
 
 # The data needs to be inverted to show when video was valid and should be stored as a series of points.
 # This is based off freeze_start and freeze_end values. The unit of these values are seconds.
 # For example, the above would translate to [0, 5.30], [7.36, 16.78]
+from numpy.ma import diff
+
 
 class FreezeValidator:
     def __init__(self):
@@ -43,12 +46,25 @@ class FreezeValidator:
     # percentage of all aggregated valid video periods over the entire duration of the stream.
     @staticmethod
     def aggregate_valid_video_periods(periods_set):
-        ratio = sum([ per[1] - per[0] for per in periods_set])/periods_set[-1][1]
+        ratio = sum([per[1] - per[0] for per in periods_set]) / periods_set[-1][1]
         return round(ratio * 100, 2)
 
+    #
     @staticmethod
     def are_all_synced(periods_set):
-        return True
+        lengthes = {len(x) for x in periods_set}
+        if len(lengthes) > 1:
+            return False
+
+        min_time = min(periods_set)
+        max_time = max(periods_set)
+
+        flat_mins= [item for sublist in min_time for item in sublist]
+        flat_maxs = [item for sublist in max_time for item in sublist]
+
+        max_diff = np.array(flat_maxs)-np.array(flat_mins)
+        is_synced = max(max_diff) < 0.5
+        return is_synced
 
     def freeze_validator(self, input_path):
         # Use a breakpoint in the code line below to debug your script.
@@ -68,7 +84,7 @@ class FreezeValidator:
 
         all_synced = FreezeValidator.are_all_synced(intervals_list_all_streams)
 
-        self.data['all_videos_freeze_frame_synced'] = all_synced
+        self.data['all_videos_freeze_frame_synced'] = bool(all_synced)
         self.data['videos'] = stream_res
 
     def write_to_file(self, filename='freeze-summary'):

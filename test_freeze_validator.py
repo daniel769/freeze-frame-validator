@@ -2,6 +2,7 @@ import FreezeValidator
 
 import json
 
+
 def test_get_valid_video_periods():
     periods = FreezeValidator.FreezeValidator.get_valid_video_periods("./")
     target = [[[4.5045, 8.3083], [9.97663, 12.1288], [16.016, 23.2733]],
@@ -25,13 +26,15 @@ def test_aggregate_valid_video_periods():
 def test_are_all_synced():
     source_1 = [[[4.5045, 8.3083], [9.97663, 12.1288], [16.016, 23.2733]],
                 [[4.5045, 10.4271], [12.012, 14.2476], [18.018, 25.392]]]
-    is_synced_1 = FreezeValidator.FreezeValidator.freeze_validator(source_1)
-    assert is_synced_1 is False
+    is_synced_1 = FreezeValidator.FreezeValidator.are_all_synced(source_1)
+    target_1 = False
+    assert is_synced_1 == target_1
 
     source_2 = [[[4.5045, 10.4271], [12.012, 14.2476], [18.018, 25.392]],
                 [[4.5045, 10.6106], [12.0787, 14.4311], [18.018, 25.5755]]]
-    is_synced_2 = FreezeValidator.FreezeValidator.freeze_validator(source_2)
-    assert is_synced_2 is True
+    is_synced_2 = FreezeValidator.FreezeValidator.are_all_synced(source_2)
+    target_2 = True
+    assert is_synced_2 == target_2
 
 
 def test_freeze_validator():
