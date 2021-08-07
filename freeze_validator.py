@@ -14,8 +14,7 @@ import pytest
 
 class FreezeValidator:
     def __init__(self):
-        self.data = []
-        print(str(self) + " c'tor")
+        self.data = {}
 
     @staticmethod
     def get_valid_video_periods(filepath):
@@ -57,7 +56,7 @@ class FreezeValidator:
         durations = []
         for per in periods_set:
             durations.append(per[1] - per[0])
-        return max(durations)
+        return round(max(durations),2)
         # return 7.35
 
     # percentage of all aggregated valid video periods over the entire duration of the stream.
@@ -68,15 +67,15 @@ class FreezeValidator:
         for per in periods_set:
             sum_dur += per[1] - per[0]
 
-        return sum_dur / periods_set[-1][1]
+        ratio = sum_dur / periods_set[-1][1]
+        return round(ratio * 100, 2)
         # return 56.00
 
     @staticmethod
     def are_all_synced(periods_set):
         return True
 
-    @staticmethod
-    def freeze_validator(input_path):
+    def freeze_validator(self, input_path):
         # Use a breakpoint in the code line below to debug your script.
 
         intervals_list_all_streams = FreezeValidator.get_valid_video_periods(input_path)
@@ -86,10 +85,6 @@ class FreezeValidator:
             longest_period = FreezeValidator.get_longest_period(intervals_list)
             valid_video_percentage = FreezeValidator.aggregate_valid_video_periods(intervals_list)
 
-            # current_stream_res = []
-            # current_stream_res.append({'longest_valid_period', longest_period})
-            # current_stream_res.append({'valid_video_percentage', valid_video_percentage})
-            # #current_stream_res.append({'valid_periods', intervals_list})
             current_stream_res = {}
             current_stream_res['longest_valid_period'] = longest_period
             current_stream_res['valid_video_percentage'] = valid_video_percentage
@@ -99,18 +94,46 @@ class FreezeValidator:
 
         all_synced = FreezeValidator.are_all_synced(intervals_list_all_streams)
 
-        data = {}
-        data['all_videos_freeze_frame_synced'] = all_synced
-        data['videos'] = stream_res
-        json_data = json.dumps(data)
+        self.data['all_videos_freeze_frame_synced'] = all_synced
+        self.data['videos'] = stream_res
+
+        # move to test
+        #json_data = json.dumps(data)
         output_dir = './output'
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
         with open(output_dir + '/result.json', 'w') as f:
-            json.dump(data, f, indent=3)
-        print(json_data)
+            json.dump(self.data, f, indent=3)
 
-        print("end")
+        #TODO(): move to tests
+        print(json.dumps(self.data))
+
+
+
+
+
+class FreezeValidatorTest:
+    def test_get_valid_video_periods(self):
+        periods = FreezeValidator.get_valid_video_periods("./")
+        target = [ [[0.00, 3.50], [6.65, 14], [19.71, 20.14]], [[0.00, 3.40], [6.65, 13.98], [19.71, 20.00]] ]
+        assert periods == target
+
+    def test_get_longest_period(self):
+        source = [0.00, 3.50], [6.65, 14], [19.71, 20.14]
+        longest = FreezeValidator.get_longest_period(source)
+        assert longest == 7.35
+
+    def test_aggregate_valid_video_periods(self):
+        FreezeValidator.aggregate_valid_video_periods()
+        assert False
+
+    def test_are_all_synced(self):
+        FreezeValidator.are_all_synced()
+        assert False
+
+    def test_freeze_validator(self):
+        FreezeValidator.freeze_validator()
+        assert False
 
 
 # Press the green button in the gutter to run the script.
